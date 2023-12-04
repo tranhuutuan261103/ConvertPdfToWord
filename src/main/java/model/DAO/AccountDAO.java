@@ -6,7 +6,7 @@ import model.DTO.RegisterRequest;
 public class AccountDAO {
 	
 	public boolean Authentication(LoginRequest request) {
-		if (request.getUsername().equals("admin") && request.getPassword().equals("admin"))
+		if (request.getEmail().equals("admin") && request.getPassword().equals("admin"))
 			return true;
 		
 		return false;
