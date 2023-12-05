@@ -1,4 +1,4 @@
-package model.DTO;
+package model.Bean;
 
 public class LoginRequest {
 	private String email;

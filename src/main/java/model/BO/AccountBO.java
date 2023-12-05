@@ -1,8 +1,8 @@
 package model.BO;
 
 import model.DAO.AccountDAO;
-import model.DTO.LoginRequest;
-import model.DTO.RegisterRequest;
+import model.Bean.LoginRequest;
+import model.Bean.RegisterRequest;
 
 public class AccountBO {
 	

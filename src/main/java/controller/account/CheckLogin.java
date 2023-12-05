@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.BO.AccountBO;
-import model.DTO.LoginRequest;
+import model.Bean.LoginRequest;
 
 /**
  * Servlet implementation class CheckLogin
@@ -51,7 +51,7 @@ public class CheckLogin extends HttpServlet {
 			response.sendRedirect("../home/index.jsp");
 		}
 		else {
-			response.sendRedirect("login.jsp");
+			response.sendRedirect("../home/error.jsp");
 		}
 		
 	}

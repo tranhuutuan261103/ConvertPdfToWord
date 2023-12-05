@@ -1,4 +1,4 @@
-package model.DTO;
+package model.Bean;
 
 public class RegisterRequest {
 	private String username;
