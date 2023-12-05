@@ -138,7 +138,7 @@
           <h1>Oops!</h1>
           <h2>404 - Login Unsuccessfuld</h2>
         </div>
-        <a href="index.html">Go TO Homepage</a>
+        <a href="index.jsp">Go TO Homepage</a>
       </div>
     </div>
   </body>

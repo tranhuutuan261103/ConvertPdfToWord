@@ -1,35 +1,27 @@
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-.header .title {
-  font-size: 24px;
-  font-weight: bold;
+body {
   margin: 0;
+  font-family: Arial, sans-serif;
 }
 
-.header .space {
-  margin: 10px 590px;
+/* Header */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header .show-login {
-  font-size: 16px;
+  font-size: 16 px;
   text-decoration: none;
   color: #000;
   background: none;
   cursor: pointer;
   display: flex;
-  margin: 0;
-  padding: 5px 10px;
+  padding: 5px;
 }
 
 .header .show-login img {
@@ -37,28 +29,9 @@
   height: 20px;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+.header .title {
+  font-size: 24px;
   margin: 0;
-  background-color: #f4f4f4;
-}
-
-.container {
-  text-align: center;
-  background-color: #fff;
-  padding: 50px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.upload-btn-wrapper {
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
 }
 
 button {
@@ -71,6 +44,35 @@ button {
   font-weight: bold;
 }
 
+/* body */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 500px;
+  height: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 8px;
+}
+
+.upload-btn-wrapper button {
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
 input[type="file"] {
   font-size: 100px;
   position: absolute;
@@ -78,6 +80,17 @@ input[type="file"] {
   top: 0;
   opacity: 0;
 }
+
+.text {
+  padding: 10px;
+  margin: 10px;
+}
+
+.text p {
+  font-size: 15px;
+}
+
+/*pop up sign in*/
 
 .popup {
   position: absolute;
@@ -176,15 +189,15 @@ input[type="file"] {
 
 .popup .form .form-element a:first-child {
   color: #204b71;
-  /* Màu cho liên kết đầu tiên */
   text-align: left;
 }
 
 .popup .form .form-element a:last-child {
   color: #1a79ca;
-  /* Màu cho liên kết thứ hai, ví dụ màu đỏ */
   text-align: right;
 }
+
+/*pop up sign up*/
 
 .popup-sign-up {
   position: absolute;
@@ -283,12 +296,56 @@ input[type="file"] {
 
 .popup-sign-up .form .form-element a:first-child {
   color: #204b71;
-  /* Màu cho liên kết đầu tiên */
   text-align: left;
 }
 
 .popup-sign-up .form .form-element a:last-child {
   color: #1a79ca;
-  /* Màu cho liên kết thứ hai, ví dụ màu đỏ */
   text-align: right;
+}
+
+/*------------------------*/
+
+/* Style cho button */
+
+.dropbtn {
+  background-color: #00b4;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Container <div> - cần thiết để định vị menu sổ xuống */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Nội dung dropdown */
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links bên trong dropdown */
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Hiển thị dropdown nội dung khi nó được hiển thị */
+
+.dropdown-content.show {
+  display: block;
 }
