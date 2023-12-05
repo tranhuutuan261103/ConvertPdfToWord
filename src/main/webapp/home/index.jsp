@@ -95,6 +95,15 @@
 		</div>
 	</div>
 
-
+	
 </body>
+  <script type="text/javascript">
+  document.getElementById('fileInput').addEventListener('change', function () {
+      // Get the form element
+      var form = document.getElementById('uploadForm');
+      console.log("Oke");
+      // Trigger the form submission
+      form.submit();
+  });
+  </script>
 </html>
