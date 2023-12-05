@@ -35,10 +35,12 @@
     </div>
     <div class="container">
       <h1>PDF to Word Converter</h1>
-      <div class="upload-btn-wrapper">
-        <button>Choose a file</button>
-        <input type="file" name="myfile" />
-      </div>
+      <form id="uploadForm" action="../home/PdfToWord" method="post" enctype="multipart/form-data">
+	      <div class="upload-btn-wrapper">
+	        <button>Choose a file</button>
+	        <input type="file" name="myfile" id="fileInput" />
+	      </div>
+	  </form>
       <div class="popup">
         <div class="close-btn" onclick="unshowSignIn()">&times</div>
         <form class="form" action="../account/CheckLogin" method="post">
@@ -114,4 +116,16 @@
       <p>Supported file types: PDF, DOC, XLS, PPT, PNG, JPG</p>
     </div>
   </body>
+  
+  <script type="text/javascript">
+  document.getElementById('fileInput').addEventListener('change', function () {
+      // Get the form element
+      var form = document.getElementById('uploadForm');
+
+      console.log("Oke");
+
+      // Trigger the form submission
+      form.submit();
+  });
+  </script>
 </html>
