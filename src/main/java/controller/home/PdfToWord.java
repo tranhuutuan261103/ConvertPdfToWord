@@ -2,7 +2,6 @@ package controller.home;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import com.spire.pdf.FileFormat;
-import com.spire.pdf.PdfDocument;
+import model.BO.PdfToWordConverterBO;
+import model.Bean.ConvertRequest;
 
 /**
  * Servlet implementation class PdfToWord
@@ -27,7 +26,6 @@ import com.spire.pdf.PdfDocument;
 @WebServlet("/home/PdfToWord")
 public class PdfToWord extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String pathRoot = "D:\\ServerStoreWord\\";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -43,17 +41,19 @@ public class PdfToWord extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Part filePart = request.getPart("myfile");
 		
-		// Extract file name and extension from Content-Disposition header
-	    String contentDispositionHeader = filePart.getHeader("Content-Disposition");
-	    String fileName = extractFileName(contentDispositionHeader);
-		
-		InputStream fileContent = filePart.getInputStream();
-		
-		PdfDocument doc = new PdfDocument();
-		doc.loadFromStream(fileContent);
-		doc.getConvertOptions().setConvertToWordUsingFlow(true);
-		String fileName_docx = extractFileNameWithoutExtension(fileName) + "-" + generateUniqueId() + ".docx";
-		doc.saveToFile(pathRoot + fileName_docx, FileFormat.DOCX);
+		if (filePart != null) {
+			// Extract file name and extension from Content-Disposition header
+		    String contentDispositionHeader = filePart.getHeader("Content-Disposition");
+		    String fileName = extractFileName(contentDispositionHeader);
+			
+		    // Get data of file
+		    InputStream fileContent = filePart.getInputStream();
+			
+			ConvertRequest convertRequest = new ConvertRequest(fileName, fileContent);
+			
+			Thread conversionThread = new Thread(new ConversionRunnable(convertRequest));
+	        conversionThread.start();
+		}
 		
 		response.sendRedirect("../home/index.jsp");
 	}
@@ -77,21 +77,18 @@ public class PdfToWord extends HttpServlet {
 	    // If no filename information found in the header, generate a default name or handle accordingly
 	    return "defaultFileName"; 
 	}
-	
-	private String extractFileNameWithoutExtension(String filePath) {
-	    // Remove the file extension
-	    int dotIndex = filePath.lastIndexOf('.');
-	    String fileName = "default";
-	    if (dotIndex > 0) {
-	    	fileName = filePath.substring(0, dotIndex);
-	    }
+}
 
-	    return fileName;
-	}
-	
-	private String generateUniqueId() {
-		UUID id = UUID.randomUUID();
-		return id.toString();
-	}
+class ConversionRunnable implements Runnable {
+ private ConvertRequest convertRequest;
 
+ public ConversionRunnable(ConvertRequest convertRequest) {
+     this.convertRequest = convertRequest;
+ }
+
+ @Override
+ public void run() {
+     PdfToWordConverterBO PTW_bo = new PdfToWordConverterBO();
+     PTW_bo.convertPdfToWord(convertRequest);
+ }
 }
