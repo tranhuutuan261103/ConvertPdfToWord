@@ -1,19 +1,20 @@
 package model.BO;
 
 import model.DAO.AccountDAO;
-import model.Bean.LoginRequest;
-import model.Bean.RegisterRequest;
+import model.Bean.Account;
+
 
 public class AccountBO {
 	
-	public boolean Authentication(LoginRequest request) {
+	public boolean Authentication(Account request) {
 		AccountDAO dao = new AccountDAO();
 		return dao.Authentication(request);
 	}
 	
-	public boolean Register(RegisterRequest request) {
+	public boolean Register(Account request) {
 		// TODO Handler login here.
 		
-		return new AccountDAO().Register(request);
+		AccountDAO dao = new AccountDAO();
+		return dao.Register(request);
 	}
 }
