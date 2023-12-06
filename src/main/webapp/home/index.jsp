@@ -20,10 +20,10 @@
 		<h1>PDF to Word Converter</h1>
 		<form id="uploadForm" action="../home/PdfToWord" method="post"
 			enctype="multipart/form-data">
-			<div class="upload-btn-wrapper">
-				<button>Choose a file</button>
-				<input type="file" name="myfile" id="fileInput" />
-			</div>
+        <div class="upload-btn-wrapper">
+          <label class="abc" for="fileInput">Choose file</label>
+          <input type="file" name="myfile" id="fileInput" hidden />
+        </div>
 		</form>
 		<div class="popup">
 			<div class="close-btn" onclick="unshowSignIn()">&times</div>
@@ -76,8 +76,8 @@
 				</div>
 				<div class="form-element checkbox-container">
 					<input type="checkbox" id="remember-me" required /> <label
-						for="remember-me">I agree to the Terms of
-						Service and Privacy Policy.</label>
+						for="remember-me">I agree to the Terms of Service and
+						Privacy Policy.</label>
 				</div>
 				<div class="form-element">
 					<button>Sign up</button>
@@ -95,9 +95,9 @@
 		</div>
 	</div>
 
-	
+
 </body>
-  <script type="text/javascript">
+<script type="text/javascript">
   document.getElementById('fileInput').addEventListener('change', function () {
       // Get the form element
       var form = document.getElementById('uploadForm');

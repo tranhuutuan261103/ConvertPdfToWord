@@ -64,21 +64,17 @@ button {
   border-radius: 8px;
 }
 
-.upload-btn-wrapper button {
-  padding: 10px 20px;
+.abc {
+  display: inline-block;
+  background-color: #00b4cc;
   color: white;
-  border: none;
-  border-radius: 5px;
+  padding: 10px 10px;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
   cursor: pointer;
-  font-size: 16px;
+  margin-top: 1rem;
 }
 
-input[type="file"] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 1;
-}
 
 .text {
   padding: 10px;
