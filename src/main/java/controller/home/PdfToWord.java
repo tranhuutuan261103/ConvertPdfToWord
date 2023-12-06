@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import model.BO.PdfToWordConverterBO;
+import model.BO.PdfToWordConverter;
 import model.Bean.ConvertRequest;
 
 /**
@@ -60,7 +60,7 @@ public class PdfToWord extends HttpServlet {
 	        conversionThread.start();
 		}
 		
-		response.sendRedirect("../home/index.jsp");
+		response.sendRedirect("../home/index-login.jsp");
 	}
 
 	/**
@@ -85,15 +85,15 @@ public class PdfToWord extends HttpServlet {
 }
 
 class ConversionRunnable implements Runnable {
- private ConvertRequest convertRequest;
-
- public ConversionRunnable(ConvertRequest convertRequest) {
-     this.convertRequest = convertRequest;
- }
-
- @Override
- public void run() {
-     PdfToWordConverterBO PTW_bo = new PdfToWordConverterBO();
-     PTW_bo.convertPdfToWord(convertRequest);
- }
+	private ConvertRequest convertRequest;
+	
+	public ConversionRunnable(ConvertRequest convertRequest) {
+	    this.convertRequest = convertRequest;
+	}
+	
+	@Override
+	public void run() {
+	    PdfToWordConverter PTW_bo = new PdfToWordConverter();
+	    PTW_bo.convertPdfToWord(convertRequest);
+	}
 }
