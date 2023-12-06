@@ -136,7 +136,7 @@ public class DriveService {
         return uploadedFile.getId();
     }
     
-    public void downloadFile(String fileId, String destinationPath) throws IOException {
+    public void downloadFile(String fileId, String fileName) throws IOException {
         Drive service = null;
         try {
             service = getDriveService();
@@ -144,23 +144,29 @@ public class DriveService {
             e.printStackTrace();
         }
 
+        String destinationPath = DownloadManager.getDefaultDownloadPath() + fileName;
         OutputStream outputStream = new FileOutputStream(destinationPath);
 
         service.files().get(fileId)
                 .executeMediaAndDownloadTo(outputStream);
         
-        System.out.println("File downloaded successfully to: " + destinationPath);
+        System.out.println("File be being downloaded to: " + destinationPath);
     }
     
-    public static String getDefaultDownloadPath() {
-        String os = System.getProperty("os.name").toLowerCase();
+    public void deleteFile(String fileId) throws IOException {
+        Drive service = null;
+        try {
+            service = getDriveService();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        if (os.contains("win")) {
-            return System.getProperty("user.home") + "\\Downloads\\";
-        } else if (os.contains("nix") || os.contains("nux") || os.contains("mac")) {
-            return System.getProperty("user.home") + "/Downloads/";
-        } else {
-            return System.getProperty("user.home") + "/";
+        try {
+            service.files().delete(fileId).execute();
+            System.out.println("File deleted successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error deleting file.");
         }
     }
 }
