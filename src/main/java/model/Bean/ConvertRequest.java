@@ -3,15 +3,25 @@ package model.Bean;
 import java.io.InputStream;
 
 public class ConvertRequest {
+	private String username;
 	private String fileName;
 	private InputStream fileContent;
 	
-	public ConvertRequest(String fileName, InputStream fileContent) {
+	public ConvertRequest(String username, String fileName, InputStream fileContent) {
 		super();
+		this.username = username;
 		this.fileName = fileName;
 		this.fileContent = fileContent;
 	}
 	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getFileName() {
 		return fileName;
 	}
