@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import model.BO.PdfToWordConverterBO;
@@ -40,6 +41,10 @@ public class PdfToWord extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Part filePart = request.getPart("myfile");
+		System.out.println("Called PdfToWord controller");
+		
+		HttpSession session = request.getSession();
+		String username = (String) session.getAttribute("username");
 		
 		if (filePart != null) {
 			// Extract file name and extension from Content-Disposition header
@@ -49,8 +54,8 @@ public class PdfToWord extends HttpServlet {
 		    // Get data of file
 		    InputStream fileContent = filePart.getInputStream();
 			
-			ConvertRequest convertRequest = new ConvertRequest(fileName, fileContent);
-			
+		    // Create thread to convert file
+			ConvertRequest convertRequest = new ConvertRequest(username, fileName, fileContent);
 			Thread conversionThread = new Thread(new ConversionRunnable(convertRequest));
 	        conversionThread.start();
 		}

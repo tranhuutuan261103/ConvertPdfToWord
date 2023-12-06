@@ -88,7 +88,7 @@ public class DriveService {
         }
     }
 
-    public void uploadFile(String filePath) throws IOException {
+    public void uploadFile(String fileName, String filePath) throws IOException {
         Drive service = null;
 		try {
 			service = getDriveService();
@@ -97,7 +97,7 @@ public class DriveService {
 			e.printStackTrace();
 		}
         File fileMetadata = new File();
-        fileMetadata.setName("NewFile.txt");
+        fileMetadata.setName(fileName);
         fileMetadata.setParents(Collections.singletonList("1kgkdGMr4koast-x2b4qis33QVLoxofnM"));
 
         Path path = Paths.get(filePath);
@@ -111,7 +111,7 @@ public class DriveService {
         System.out.println("File ID: " + uploadedFile.getId());
     }
     
-    public String uploadFile(OutputStream outputStream) throws IOException {
+    public String uploadFile(String fileName, ByteArrayOutputStream outputStream) throws IOException {
     	Drive service = null;
 		try {
 			service = getDriveService();
@@ -121,11 +121,11 @@ public class DriveService {
 			return "-1";
 		}
         File fileMetadata = new File();
-        fileMetadata.setName("NewFile.docx");
+        fileMetadata.setName(fileName);
         fileMetadata.setParents(Collections.singletonList("1kgkdGMr4koast-x2b4qis33QVLoxofnM"));
 
         // Convert DataOutputStream to ByteArrayContent
-        ByteArrayContent content = new ByteArrayContent("application/octet-stream", ((ByteArrayOutputStream) outputStream).toByteArray());
+        ByteArrayContent content = new ByteArrayContent("application/octet-stream", outputStream.toByteArray());
 
 		// Create the file on Google Drive
         File uploadedFile = service.files().create(fileMetadata, content)
