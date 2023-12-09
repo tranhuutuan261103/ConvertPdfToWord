@@ -2,12 +2,16 @@ package model.BO;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.GeneralSecurityException;
 import java.util.UUID;
 
-import com.spire.pdf.FileFormat;
-import com.spire.pdf.PdfDocument;
+import com.aspose.pdf.Document;
 
+import com.aspose.pdf.DocSaveOptions;
 import model.Bean.ConvertContentRequest;
 import model.Bean.ConvertRequest;
 import model.Bean.FileStorageVM;
@@ -15,19 +19,27 @@ import model.Bean.FileStorageVM;
 public class PdfToWordConverter {
 	public void convertPdfToWord(ConvertRequest request) {
 		try {
-			PdfDocument doc = new PdfDocument();
-			doc.loadFromStream(request.getFileContent());
-			doc.getConvertOptions().setConvertToWordUsingFlow(true);
-			String fileName_docx = extractFileNameWithoutExtension(request.getFileName()) + "-" + generateUniqueId() + ".docx";
+			Path tempPdfFile = Files.createTempFile("temp", ".pdf");
+			Files.copy(request.getFileContent(), tempPdfFile, StandardCopyOption.REPLACE_EXISTING);
 			
-			// Convert PDF file to Word file and save to local
-			doc.saveToFile(DownloadManager.getDefaultDownloadPath() + fileName_docx, FileFormat.DOCX);
-			System.out.println("Save file to local successfully at " + DownloadManager.getDefaultDownloadPath() + fileName_docx + " (in model.BO.PdfToWordConverterBO)");
+			// Open PDF source file
+			Document pdfDocument = new Document(tempPdfFile.toString());
 			
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			// Save data after convert
-			doc.saveToStream(byteArrayOutputStream, FileFormat.DOCX);
-			
+			// Convert PDF to DOCX
+			DocSaveOptions saveOptions = new DocSaveOptions();
+			saveOptions.setFormat(DocSaveOptions.DocFormat.DocX);
+
+            String fileName_docx = extractFileNameWithoutExtension(request.getFileName()) + "-" + generateUniqueId() + ".docx";
+
+            // Save data after convert
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            pdfDocument.save(byteArrayOutputStream, saveOptions);
+            
+            // Save the ByteArrayOutputStream content to Word file
+            Files.write(Paths.get(DownloadManager.getDefaultDownloadPath(), fileName_docx), byteArrayOutputStream.toByteArray());
+            System.out.println("Save file to local successfully at " + DownloadManager.getDefaultDownloadPath()
+                    + fileName_docx + " (in model.BO.PdfToWordConverter)");
+            
 			if (request.getUsername() != null && request.getUsername().isEmpty() == false) {
 				String idContent = "-1";
 				
@@ -36,7 +48,7 @@ public class PdfToWordConverter {
 					DriveService driveService = new DriveService();
 					idContent = driveService.uploadFile(fileName_docx, byteArrayOutputStream);
 					byteArrayOutputStream.close();
-					System.out.println("Save file to drive successfully (in model.BO.PdfToWordConverterBO)");
+					System.out.println("Save file to drive successfully (in model.BO.PdfToWordConverter)");
 				}
 				
 				// Save id of file on drive to database
