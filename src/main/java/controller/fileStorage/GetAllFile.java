@@ -44,7 +44,7 @@ public class GetAllFile extends HttpServlet {
 		ArrayList<FileStorageVM> list = bo.getAllFile(email);
 		
 		for (FileStorageVM fileStorageVM : list) {
-			System.out.println(fileStorageVM.getId() + " " + fileStorageVM.getFileName());
+			System.out.println(fileStorageVM.getId() + " " + fileStorageVM.getFileName() + " " + fileStorageVM.getCreationDate());
 		}
 	}
 

@@ -22,7 +22,7 @@ public class FileStorageDAO {
 	        if (con == null) {
 	            throw new SQLException("Khong the ket noi");
 	        }
-	        String query = "SELECT id, name FROM convertcontents WHERE email = ?";
+	        String query = "SELECT id, name, creationDate FROM convertcontents WHERE email = ?";
 	        ps = con.prepareStatement(query);
 	        ps.setString(1, email);
 	        rs = ps.executeQuery();
@@ -32,7 +32,7 @@ public class FileStorageDAO {
 	        }
 	        
 	        while (rs.next()) {
-	        	FileStorageVM fileStorageVM = new FileStorageVM(rs.getString(1), rs.getString(2));
+	        	FileStorageVM fileStorageVM = new FileStorageVM(rs.getString(1), rs.getString(2), rs.getDate(3));
 	        	list.add(fileStorageVM);
 	        }
 	        return list;
@@ -62,7 +62,7 @@ public class FileStorageDAO {
 	        if (con == null) {
 	            throw new SQLException("Khong the ket noi");
 	        }
-	        String query = "SELECT id, name FROM convertcontents WHERE id = ? and email = ?";
+	        String query = "SELECT id, name, creationDate FROM convertcontents WHERE id = ? and email = ?";
 	        ps = con.prepareStatement(query);
 	        ps.setString(1, id);
 	        ps.setString(2, email);
@@ -72,7 +72,7 @@ public class FileStorageDAO {
 	        	return null;
 	        }
 	        
-	        return new FileStorageVM(rs.getString(1), rs.getString(2));
+	        return new FileStorageVM(rs.getString(1), rs.getString(2), rs.getDate(3));
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
