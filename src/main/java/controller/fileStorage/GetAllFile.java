@@ -43,6 +43,9 @@ public class GetAllFile extends HttpServlet {
 		FileStorageBO bo = new FileStorageBO();
 		ArrayList<FileStorageVM> list = bo.getAllFile(email);
 		
+		request.getSession().setAttribute("listFile", list);
+		response.sendRedirect("../home/managefile.jsp");
+		
 		for (FileStorageVM fileStorageVM : list) {
 			System.out.println(fileStorageVM.getId() + " " + fileStorageVM.getFileName() + " " + fileStorageVM.getCreationDate());
 		}
