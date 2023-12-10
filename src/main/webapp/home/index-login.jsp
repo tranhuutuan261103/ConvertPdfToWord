@@ -24,7 +24,7 @@
                 }
             %>
         <div id="myDropdown" class="dropdown-content">
-          <a href="#history">History</a>
+          <a href="../fileStorage/GetAllFile">History</a>
           <a href="../account/LogoutServlet">Log out</a>
         </div>
       </div>
