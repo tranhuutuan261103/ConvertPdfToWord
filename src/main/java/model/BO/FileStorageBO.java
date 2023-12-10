@@ -26,4 +26,9 @@ public class FileStorageBO {
 		FileStorageDAO dao = new FileStorageDAO();
 		return dao.SaveContent(cc_request);
 	}
+	
+	public int deleteAllFilesById(String[] listId, String email) {
+		FileStorageDAO dao = new FileStorageDAO();
+		return dao.deleteAllFilesById(listId, email);
+	}
 }

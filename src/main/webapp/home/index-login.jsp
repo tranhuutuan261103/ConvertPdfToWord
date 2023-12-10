@@ -3,13 +3,14 @@
 <!DOCTYPE html>
 <html>
   <head>
+  	<title>Convert PDF to Word</title>
     <link rel="stylesheet" href="../assets/css/styleIndex.css" />
     <script src="../assets/js/common.js"></script>
   </head>
 
   <body>
     <div class="header">
-      <h1 class="title">PDF To Word</h1>
+      <h1 class="title"><a href="../home/index" style="color: inherit; text-decoration: none">PDF To Word</a></h1>
       <div class="dropdown">
          	<% 
                 String username = (String) session.getAttribute("username");

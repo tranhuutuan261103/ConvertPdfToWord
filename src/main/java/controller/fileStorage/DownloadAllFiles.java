@@ -9,20 +9,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.BO.FileStorageBO;
-import model.BO.PdfToWordConverter;
 import model.Bean.FileStorageVM;
 
 /**
- * Servlet implementation class DownloadFile
+ * Servlet implementation class DownloadAllFiles
  */
-@WebServlet("/fileStorage/DownloadFile")
-public class DownloadFile extends HttpServlet {
+@WebServlet("/fileStorage/DownloadAllFiles")
+public class DownloadAllFiles extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DownloadFile() {
+    public DownloadAllFiles() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,7 +30,6 @@ public class DownloadFile extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		// Kiem tra login hay chua
 		HttpSession session = request.getSession();
 		String email = (String) session.getAttribute("username");
@@ -40,20 +38,23 @@ public class DownloadFile extends HttpServlet {
 			return;
 		}
 		
-		String id = (String) request.getParameter("downloadId");
-		System.out.println(id);
+		String par = (String) request.getParameter("downloadIdAll");
+		
+		String[] listId = par.split(",");
 		
 		FileStorageBO bo = new FileStorageBO();
-		FileStorageVM fileStorageVM = bo.getFileById(id, email);
-		
-		if (fileStorageVM != null)
-		{
-			// Create thread to download file
-			Thread thread = new Thread(new DownloadFileRunnable(fileStorageVM));
-			thread.start();
-		}
-		else {
-			System.out.println("Not oke");
+		for (String id : listId) {
+			FileStorageVM fileStorageVM = bo.getFileById(id, email);
+			
+			if (fileStorageVM != null)
+			{
+				// Create thread to download file
+				Thread thread = new Thread(new DownloadFileRunnable(fileStorageVM));
+				thread.start();
+			}
+			else {
+				System.out.println("Can't download file having id: " + id);
+			}
 		}
 		
 		response.sendRedirect("../home/managefile.jsp");
@@ -66,18 +67,5 @@ public class DownloadFile extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-}
 
-class DownloadFileRunnable implements Runnable {
-	 private FileStorageVM fileStorageVM;
-
-	 public DownloadFileRunnable(FileStorageVM fileStorageVM) {
-	     this.fileStorageVM = fileStorageVM;
-	 }
-
-	 @Override
-	 public void run() {
-	     PdfToWordConverter PTW_bo = new PdfToWordConverter();
-	     PTW_bo.downloadFile(fileStorageVM);
-	 }
 }

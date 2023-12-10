@@ -60,7 +60,12 @@ public class PdfToWord extends HttpServlet {
 	        conversionThread.start();
 		}
 		
-		response.sendRedirect("../home/index-login.jsp");
+		if (username == null || username.isEmpty()) {
+			response.sendRedirect("../home/index.jsp");
+		}
+		else {
+			response.sendRedirect("../home/index-login.jsp");
+		}
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package controller.fileStorage;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,16 +14,16 @@ import model.BO.PdfToWordConverter;
 import model.Bean.FileStorageVM;
 
 /**
- * Servlet implementation class DownloadFile
+ * Servlet implementation class DeleteAllFiles
  */
-@WebServlet("/fileStorage/DownloadFile")
-public class DownloadFile extends HttpServlet {
+@WebServlet("/fileStorage/DeleteAllFiles")
+public class DeleteAllFiles extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DownloadFile() {
+    public DeleteAllFiles() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,7 +32,6 @@ public class DownloadFile extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		// Kiem tra login hay chua
 		HttpSession session = request.getSession();
 		String email = (String) session.getAttribute("username");
@@ -40,23 +40,31 @@ public class DownloadFile extends HttpServlet {
 			return;
 		}
 		
-		String id = (String) request.getParameter("downloadId");
-		System.out.println(id);
+		String par = (String) request.getParameter("deleteIdAll");
+		
+		String[] listId = par.split(",");
+		if (listId.length == 0)
+		{
+			response.sendRedirect("../home/managefile.jsp");
+			return;
+		}
 		
 		FileStorageBO bo = new FileStorageBO();
-		FileStorageVM fileStorageVM = bo.getFileById(id, email);
-		
-		if (fileStorageVM != null)
-		{
-			// Create thread to download file
-			Thread thread = new Thread(new DownloadFileRunnable(fileStorageVM));
-			thread.start();
+		for (String id : listId) {
+			FileStorageVM fileStorageVM = bo.getFileById(id, email);
+			
+			if (fileStorageVM != null)
+			{
+				// Delete file
+				PdfToWordConverter PTW_bo = new PdfToWordConverter();
+			    PTW_bo.deleteFile(id, email);
+			}
+			else {
+				System.out.println("Can't delete file having id: " + id);
+			}
 		}
-		else {
-			System.out.println("Not oke");
-		}
 		
-		response.sendRedirect("../home/managefile.jsp");
+		response.sendRedirect("../fileStorage/GetAllFile");
 	}
 
 	/**
@@ -66,18 +74,5 @@ public class DownloadFile extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-}
 
-class DownloadFileRunnable implements Runnable {
-	 private FileStorageVM fileStorageVM;
-
-	 public DownloadFileRunnable(FileStorageVM fileStorageVM) {
-	     this.fileStorageVM = fileStorageVM;
-	 }
-
-	 @Override
-	 public void run() {
-	     PdfToWordConverter PTW_bo = new PdfToWordConverter();
-	     PTW_bo.downloadFile(fileStorageVM);
-	 }
 }
