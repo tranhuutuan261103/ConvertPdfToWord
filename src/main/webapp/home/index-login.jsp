@@ -40,7 +40,7 @@
       >
         <div class="upload-btn-wrapper">
           <label class="abc" for="fileInput">Choose file</label>
-          <input type="file" name="myfile" id="fileInput" hidden />
+          <input type="file" name="myfile[]" id="fileInput" multiple="multiple" hidden />
         </div>
       </form>
       <div class="text">

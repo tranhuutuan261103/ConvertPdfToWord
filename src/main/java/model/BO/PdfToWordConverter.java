@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.GeneralSecurityException;
-import java.util.UUID;
 
 import com.aspose.pdf.Document;
 
@@ -29,7 +28,7 @@ public class PdfToWordConverter {
 			DocSaveOptions saveOptions = new DocSaveOptions();
 			saveOptions.setFormat(DocSaveOptions.DocFormat.DocX);
 
-            String fileName_docx = extractFileNameWithoutExtension(request.getFileName()) + "-" + generateUniqueId() + ".docx";
+            String fileName_docx = request.getFileName() + ".docx";
 
             // Save data after convert
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -61,22 +60,6 @@ public class PdfToWordConverter {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-	}
-	
-	private String extractFileNameWithoutExtension(String filePath) {
-	    // Remove the file extension
-	    int dotIndex = filePath.lastIndexOf('.');
-	    String fileName = "default";
-	    if (dotIndex > 0) {
-	    	fileName = filePath.substring(0, dotIndex);
-	    }
-
-	    return fileName;
-	}
-	
-	private String generateUniqueId() {
-		UUID id = UUID.randomUUID();
-		return id.toString();
 	}
 
 	public void downloadFile(FileStorageVM fileStorageVM) {
