@@ -159,4 +159,52 @@ public class FileStorageDAO {
 
 	    return false; // Return false in case of an exception
 	}
+	
+	public int deleteAllFilesById(String[] listId, String email) {
+	    Connection con = null;
+	    PreparedStatement ps = null;
+
+	    try {
+	        con = DatabaseConnection.getConnection();
+	        if (con == null) {
+	            throw new SQLException("Khong the ket noi");
+	        }
+
+	        String query = "DELETE FROM convertcontents WHERE id = ? AND email = ?";
+	        ps = con.prepareStatement(query);
+
+	        // Use a loop for batch deletion
+	        for (String id : listId) {
+	            ps.setString(1, id);
+	            ps.setString(2, email);
+	            ps.addBatch();
+	        }
+
+	        // Execute batch deletion
+	        int[] rowsAffected = ps.executeBatch();
+
+	        int totalRowsAffected = 0;
+
+	        // Calculate total affected rows
+	        for (int affectedRows : rowsAffected) {
+	            totalRowsAffected += affectedRows;
+	        }
+
+	        return totalRowsAffected; // Return the total number of rows affected
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        // Close resources
+	        try {
+	            if (ps != null) ps.close();
+	            if (con != null) con.close();
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+
+	    return 0; // Return 0 in case of an exception
+	}
+
 }

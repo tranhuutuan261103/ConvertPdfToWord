@@ -43,6 +43,7 @@ public class GetAllFile extends HttpServlet {
 		FileStorageBO bo = new FileStorageBO();
 		ArrayList<FileStorageVM> list = bo.getAllFile(email);
 		
+		request.getSession().removeAttribute("listFile");
 		request.getSession().setAttribute("listFile", list);
 		response.sendRedirect("../home/managefile.jsp");
 		

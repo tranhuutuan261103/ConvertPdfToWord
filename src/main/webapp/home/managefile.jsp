@@ -5,6 +5,7 @@ pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
     <head>
+    	<title>Convert PDF to Word</title>
         <link rel="stylesheet" href="../assets/css/styleIndex.css" />
         <script src="../assets/js/common.js"></script>
         <link
@@ -41,7 +42,7 @@ pageEncoding="ISO-8859-1"%>
 						listIdDelete.push(selects[i].value);
 					}
 				}
-	    		document.getElementById("deleteId").value = listIdDelete;
+	    		document.getElementById("deleteIdAll").value = listIdDelete;
 	        	document.querySelector(".delete-all").classList.add("active");
 	      	}
 	
@@ -57,7 +58,7 @@ pageEncoding="ISO-8859-1"%>
 						listIdDownload.push(selects[i].value);
 					}
 				}
-		    	document.getElementById("downloadId").value = listIdDownload;
+		    	document.getElementById("downloadIdAll").value = listIdDownload;
 		        document.querySelector(".download-all").classList.add("active");
 		    }
 		
@@ -96,7 +97,7 @@ pageEncoding="ISO-8859-1"%>
 
     <body>
         <div class="header">
-            <h1 class="title">PDF To Word</h1>
+            <h1 class="title"><a href="../home/index" style="color: inherit; text-decoration: none">PDF To Word</a></h1>
             <div class="dropdown">
                 <% String username = (String) session.getAttribute("username");
                 if (username != null && !username.isEmpty()) { %>
@@ -163,7 +164,7 @@ pageEncoding="ISO-8859-1"%>
         </div>
         
         <div class="popup-delete popup">
-      		<form method="POST" action="" class="popup__form delete-form">
+      		<form  action="../fileStorage/DeleteFile" method="POST" class="popup__form delete-form">
       			<input type="hidden" id="deleteId" name="deleteId" value="" />
         		<p>Are you sure to delete ?</p>
 		        <div class="popup__action">
@@ -174,7 +175,7 @@ pageEncoding="ISO-8859-1"%>
       	</div>
       	
       	<div class="popup-download popup">
-      		<form method="POST" action="" class="popup__form download-form">
+      		<form action="../fileStorage/DownloadFile" method="POST" class="popup__form download-form">
       			<input type="hidden" id="downloadId" name="downloadId" value="" />
         		<p>Are you sure to download ?</p>
 		        <div class="popup__action">
@@ -185,8 +186,8 @@ pageEncoding="ISO-8859-1"%>
       	</div>
       	
       	<div class="popup-delete popup delete-all">
-      		<form method="POST" action="" class="popup__form delete-form">
-      			<input type="hidden" id="deleteId" name="deleteId" value="" />
+      		<form action="../fileStorage/DeleteAllFiles" method="POST" class="popup__form delete-form">
+      			<input type="hidden" id="deleteIdAll" name="deleteIdAll" value="" />
         		<p>Are you sure to delete ?</p>
 		        <div class="popup__action">
 			        <button type="submit" class="btn success-btn load-target" name="deleteAll">Confirm</button>
@@ -196,8 +197,8 @@ pageEncoding="ISO-8859-1"%>
       	</div>
       	
       	<div class="popup-download popup download-all">
-      		<form method="POST" action="" class="popup__form download-form">
-      			<input type="hidden" id="downloadId" name="downloadId" value="" />
+      		<form action="../fileStorage/DownloadAllFiles" method="POST" class="popup__form download-form">
+      			<input type="hidden" id="downloadIdAll" name="downloadIdAll" value="" />
         		<p>Are you sure to download ?</p>
 		        <div class="popup__action">
 			        <button type="submit" class="" name="downloadAll">Confirm</button>
