@@ -44,54 +44,63 @@ public class PdfToWord extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Collection<Part> fileParts = request.getParts();
-		System.out.println("Called PdfToWord controller");
-		
-		HttpSession session = request.getSession();
-		String username = (String) session.getAttribute("username");
-		
-		if (fileParts != null && !fileParts.isEmpty()) {
-	        List<ConvertRequest> convertRequests = new ArrayList<>();
-
-	        // Loop through each file part and create ConvertRequest
-	        for (Part filePart : fileParts) {
-	            // Extract file name and extension from Content-Disposition header
-	            String contentDispositionHeader = filePart.getHeader("Content-Disposition");
-	            String fileName = extractFileName(contentDispositionHeader);
-	            
-	            String uniqueId = generateUniqueId();
-	            String generatedFileName = extractFileNameWithoutExtension(fileName) + "-" + uniqueId;
-
-	            // Get data of file
-	            InputStream fileContent = filePart.getInputStream();
-
-	            // Create ConvertRequest and add to the list
-	            ConvertRequest convertRequest = new ConvertRequest(username, generatedFileName, fileContent);
-	            convertRequests.add(convertRequest);
-	        }
-
-	        // Create threads to convert files
-	        List<Thread> conversionThreads = new ArrayList<>();
-
-	        for (ConvertRequest convertRequest : convertRequests) {
-	            Thread conversionThread = new Thread(new ConversionRunnable(convertRequest));
-	            conversionThreads.add(conversionThread);
-	            conversionThread.start();
-	        }
-
-	        for (Thread conversionThread : conversionThreads) {
-	            try {
-	                conversionThread.join();
-	            } catch (InterruptedException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	        
-	        response.sendRedirect("../home/index-login.jsp");
-
-	    } else {
-	        response.sendRedirect("../home/index.jsp");
-	    }
+		try {
+			Collection<Part> fileParts = request.getParts();
+			System.out.println("Called PdfToWord controller");
+			
+			HttpSession session = request.getSession();
+			String username = (String) session.getAttribute("username");
+			
+			if (fileParts != null && !fileParts.isEmpty()) {
+		        List<ConvertRequest> convertRequests = new ArrayList<>();
+	
+		        // Loop through each file part and create ConvertRequest
+		        for (Part filePart : fileParts) {
+		            // Extract file name and extension from Content-Disposition header
+		            String contentDispositionHeader = filePart.getHeader("Content-Disposition");
+		            String fileName = extractFileName(contentDispositionHeader);
+		            
+		            String uniqueId = generateUniqueId();
+		            String generatedFileName = extractFileNameWithoutExtension(fileName) + "-" + uniqueId;
+	
+		            // Get data of file
+		            InputStream fileContent = filePart.getInputStream();
+	
+		            // Create ConvertRequest and add to the list
+		            if (fileContent != null) {
+			            ConvertRequest convertRequest = new ConvertRequest(username, generatedFileName, fileContent);
+			            convertRequests.add(convertRequest);
+		            }
+		            else {
+		            	System.out.println("InputStream of " + generatedFileName + " is null");
+		            }
+		        }
+	
+		        // Create threads to convert files
+		        List<Thread> conversionThreads = new ArrayList<>();
+	
+		        for (ConvertRequest convertRequest : convertRequests) {
+		            Thread conversionThread = new Thread(new ConversionRunnable(convertRequest));
+		            conversionThreads.add(conversionThread);
+		            conversionThread.start();
+		        }
+	
+		        for (Thread conversionThread : conversionThreads) {
+		            try {
+		                conversionThread.join();
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		        
+		        response.sendRedirect("../home/index-login.jsp");
+	
+		    } else {
+		        response.sendRedirect("../home/index.jsp");
+		    }
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	/**

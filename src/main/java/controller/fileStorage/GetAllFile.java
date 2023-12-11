@@ -46,10 +46,6 @@ public class GetAllFile extends HttpServlet {
 		request.getSession().removeAttribute("listFile");
 		request.getSession().setAttribute("listFile", list);
 		response.sendRedirect("../home/managefile.jsp");
-		
-		for (FileStorageVM fileStorageVM : list) {
-			System.out.println(fileStorageVM.getId() + " " + fileStorageVM.getFileName() + " " + fileStorageVM.getCreationDate());
-		}
 	}
 
 	/**
