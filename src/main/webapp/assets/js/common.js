@@ -1,5 +1,9 @@
 function showSignIn() {
   document.querySelector(".popup").classList.add("active");
+  unshowForgot();
+  unshowSignUp();
+  unshowEnterValid();
+  unshowNewPass();
 }
 
 function unshowSignIn() {
@@ -13,6 +17,34 @@ function showSignUp() {
 
 function unshowSignUp() {
   document.querySelector(".popup-sign-up").classList.remove("active");
+}
+
+function showForgot() {
+  document.querySelector(".popup-forgot-pass").classList.add("active");
+  unshowSignUp();
+  unshowSignIn();
+}
+
+function unshowForgot() {
+  document.querySelector(".popup-forgot-pass").classList.remove("active");
+}
+
+function showEnterValid() {
+  document.querySelector(".popup-otp").classList.add("active");
+  unshowForgot();
+}
+
+function unshowEnterValid() {
+  document.querySelector(".popup-otp").classList.remove("active");
+}
+
+function showNewPass() {
+  document.querySelector(".popup-create-new-pass").classList.add("active");
+  unshowForgot();
+}
+
+function unshowNewPass() {
+  document.querySelector(".popup-create-new-pass").classList.remove("active");
 }
 
 // Hàm để chuyển đổi trạng thái hiển thị của dropdown
