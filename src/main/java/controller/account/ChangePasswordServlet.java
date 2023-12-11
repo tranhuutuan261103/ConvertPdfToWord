@@ -1,29 +1,26 @@
-package controller.fileStorage;
+package controller.account;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import model.BO.FileStorageBO;
-import model.Bean.FileStorageVM;
+import model.BO.AccountBO;
+import model.Bean.Account;
 
 /**
- * Servlet implementation class GetAllFile
+ * Servlet implementation class ChangePasswordServlet
  */
-@WebServlet("/fileStorage/GetAllFile")
-public class GetAllFile extends HttpServlet {
+@WebServlet("/account/ChangePasswordServlet")
+public class ChangePasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetAllFile() {
+    public ChangePasswordServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,20 +29,8 @@ public class GetAllFile extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session = request.getSession();
-		String email = (String) session.getAttribute("username");
-		if (email == null || email.isEmpty() == true) {
-			response.sendRedirect("../home/index.jsp");
-			return;
-		}
-		
-		FileStorageBO bo = new FileStorageBO();
-		ArrayList<FileStorageVM> list = bo.getAllFile(email);
-		
-		request.getSession().removeAttribute("listFile");
-		request.getSession().setAttribute("listFile", list);
-		response.sendRedirect("../home/managefile.jsp");
+		// TODO Auto-generated method stub
+		doPost(request, response);
 	}
 
 	/**
@@ -53,7 +38,21 @@ public class GetAllFile extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+		String user = (String) request.getSession().getAttribute("emailChangepass");
+
+		String pass = request.getParameter("comfirm-password-email");
+		
+		System.out.println(user + " - " + pass);
+
+		Account changePasswordRequest = new Account(user, pass);
+
+		AccountBO accountBO = new AccountBO();
+		boolean result = accountBO.changePassword(changePasswordRequest);
+
+		if (result == true) {
+			response.sendRedirect("../home/index.jsp");
+		} else {
+			response.sendRedirect("../home/error.jsp");
+		}	}
 
 }

@@ -7,20 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.BO.AccountBO;
-import model.Bean.Account;
-
 /**
- * Servlet implementation class CheckRegister
+ * Servlet implementation class ValidateOtpServlet
  */
-@WebServlet("/account/CheckRegister")
-public class CheckRegister extends HttpServlet {
+@WebServlet("/account/ValidateOtpServlet")
+public class ValidateOtpServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public CheckRegister() {
+	public ValidateOtpServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -32,8 +29,9 @@ public class CheckRegister extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doPost(request,response);
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -41,19 +39,15 @@ public class CheckRegister extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-		String user = request.getParameter("new-email");
-		String pass = request.getParameter("confirm-password");
+		String inputOtp = request.getParameter("code");
+		String sessionOtp = (String) request.getSession().getAttribute("otp");
 
-		Account registerRequest = new Account(user, pass);
-
-		AccountBO accountBO = new AccountBO();
-		boolean result = accountBO.Register(registerRequest);
-
-		if (result == true) {
+		if (sessionOtp != null && sessionOtp.equals(inputOtp)) {
+			request.getSession().setAttribute("otpVerified", "true");
 			response.sendRedirect("../home/index.jsp");
 		} else {
-			response.sendRedirect("../home/error.jsp");
+			request.getSession().setAttribute("otpVerified", "false");
+			response.sendRedirect("../home/index.jsp");
 		}
 	}
 

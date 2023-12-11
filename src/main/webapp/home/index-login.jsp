@@ -43,7 +43,8 @@ response.sendRedirect("../home/index.jsp"); } %>
             name="myfile[]"
             id="fileInput"
             multiple="multiple"
-            hidden
+            accept=".pdf"
+            hidden="hidden"
           />
         </div>
       </form>
