@@ -91,18 +91,29 @@
 		</div>
 
 		<div class="text">
-			<p>Add PDF, images, Word, Excel, and PowerPoint files</p>
-			<p>Supported file types: PDF, DOC, XLS, PPT, PNG, JPG</p>
+			<p>Please select the file in PDF format</p>
+			<p>Only supports converting 1 file, please log in to convert more</p>
 		</div>
 	</div>
-
+	
+	<!-- Modal -->
+    <div class="modal">
+      <div class="body">   
+        <!-- <img alt="Loading" src="../assets/image/loading.gif" class="modal-icon"> -->
+        <div class="ring">Converting
+  			<span></span>
+		</div>
+      </div>
+    </div>
 
 </body>
 <script type="text/javascript">
   document.getElementById('fileInput').addEventListener('change', function () {
       // Get the form element
       var form = document.getElementById('uploadForm');
-      console.log("Oke");
+      console.log("Oke");   
+      document.querySelector(".modal").classList.add("active");
+      document.querySelector(".container").classList.add("unactive");
       // Trigger the form submission
       form.submit();
   });
