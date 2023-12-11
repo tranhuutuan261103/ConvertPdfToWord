@@ -23,11 +23,17 @@
 			enctype="multipart/form-data">
         <div class="upload-btn-wrapper">
           <label class="abc" for="fileInput">Choose file</label>
-          <input type="file" name="myfile" id="fileInput" hidden />
+          <input 
+          	type="file"
+           	name="myfile"
+            id="fileInput"
+            accept=".pdf"
+            hidden="hidden" 
+          />
         </div>
 		</form>
 		<div class="popup">
-			<div class="close-btn" onclick="unshowSignIn()">&times</div>
+			<div class="close-btn" onclick="unshowSignIn()">&times;</div>
 			<form class="form" action="../account/CheckLogin" method="post">
 				<h2>Log in</h2>
 				<div class="form-element">
@@ -55,7 +61,7 @@
 		</div>
 
 		<div class="popup-sign-up">
-			<div class="close-btn" onclick="unshowSignUp()">&times</div>
+			<div class="close-btn" onclick="unshowSignUp()">&times;</div>
 			<form class="form" action="../account/CheckRegister">
 				<h2>Log in</h2>
 				<div class="form-element">
