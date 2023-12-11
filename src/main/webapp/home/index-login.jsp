@@ -1,29 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+pageEncoding="ISO-8859-1"%> <% String username = (String)
+session.getAttribute("username"); if (username == null || username.isEmpty()) {
+response.sendRedirect("../home/index.jsp"); } %>
 <!DOCTYPE html>
 <html>
   <head>
-  	<title>Convert PDF to Word</title>
-    <link rel="stylesheet" href="../assets/css/styleIndex.css" />   
+    <title>Convert PDF to Word</title>
+    <link rel="stylesheet" href="../assets/css/styleIndex.css" />
     <script src="../assets/js/common.js"></script>
   </head>
 
   <body>
     <div class="header">
-      <h1 class="title"><a href="../home/index" style="color: inherit; text-decoration: none">PDF To Word</a></h1>
+      <h1 class="title">
+        <a href="../home/index" style="color: inherit; text-decoration: none"
+          >PDF To Word</a
+        >
+      </h1>
       <div class="dropdown">
-         	<% 
-                String username = (String) session.getAttribute("username");
-                if (username != null && !username.isEmpty()) {
-            %>
-                <button class="dropbtn" onclick="toggleDropdown()"><%= username %></button>
-            <% 
-                } else {
-            %>
-                <button class="dropbtn" onclick="toggleDropdown()">User</button>
-            <% 
-                }
-            %>
+        <button class="dropbtn" onclick="toggleDropdown()">
+          <%= username %>
+        </button>
+
         <div id="myDropdown" class="dropdown-content">
           <a href="../fileStorage/GetAllFile">History</a>
           <a href="../account/LogoutServlet">Log out</a>
@@ -40,7 +38,13 @@
       >
         <div class="upload-btn-wrapper">
           <label class="abc" for="fileInput">Choose file</label>
-          <input type="file" name="myfile[]" id="fileInput" multiple="multiple" hidden />
+          <input
+            type="file"
+            name="myfile[]"
+            id="fileInput"
+            multiple="multiple"
+            hidden
+          />
         </div>
       </form>
       <div class="text">
@@ -48,27 +52,29 @@
         <p>Can convert multiple files at once</p>
       </div>
     </div>
-    
+
     <!-- Modal -->
     <div class="modal">
-      <div class="body">   
+      <div class="body">
         <!-- <img alt="Loading" src="../assets/image/loading.gif" class="modal-icon"> -->
-        <div class="ring">Converting
-  			<span></span>
-		</div>
+        <div class="ring">
+          Converting
+          <span></span>
+        </div>
       </div>
     </div>
-    
   </body>
   <script type="text/javascript">
-  document.getElementById('fileInput').addEventListener('change', function () {
-      // Get the form element
-      var form = document.getElementById('uploadForm');
-      console.log("Oke");
-      document.querySelector(".modal").classList.add("active");
-      document.querySelector(".container").classList.add("unactive");
-      // Trigger the form submission
-      form.submit();
-  });
+    document
+      .getElementById("fileInput")
+      .addEventListener("change", function () {
+        // Get the form element
+        var form = document.getElementById("uploadForm");
+        console.log("Oke");
+        document.querySelector(".modal").classList.add("active");
+        document.querySelector(".container").classList.add("unactive");
+        // Trigger the form submission
+        form.submit();
+      });
   </script>
 </html>
