@@ -18,7 +18,7 @@ import model.Bean.FileStorageVM;
 public class PdfToWordConverter {
 	public void convertPdfToWord(ConvertRequest request) {
 		try {
-			Path tempPdfFile = Files.createTempFile("temp", ".pdf");
+			Path tempPdfFile = Files.createTempFile("temp" + extractFileNameWithoutExtension(request.getFileName()), ".pdf");
 			Files.copy(request.getFileContent(), tempPdfFile, StandardCopyOption.REPLACE_EXISTING);
 			
 			// Open PDF source file
@@ -58,7 +58,7 @@ public class PdfToWordConverter {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -82,5 +82,16 @@ public class PdfToWordConverter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private String extractFileNameWithoutExtension(String filePath) {
+	    // Remove the file extension
+	    int dotIndex = filePath.lastIndexOf('.');
+	    String fileName = "default";
+	    if (dotIndex > 0) {
+	    	fileName = filePath.substring(0, dotIndex);
+	    }
+
+	    return fileName;
 	}
 }

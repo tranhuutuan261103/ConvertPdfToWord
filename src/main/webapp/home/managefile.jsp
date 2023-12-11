@@ -1,5 +1,6 @@
 <%@page import="model.Bean.FileStorageVM"%>
 <%@page import="java.util.List"%>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
@@ -147,7 +148,9 @@
 				</thead>
 				<tbody>
 					<%
+						@SuppressWarnings("unchecked")  // Suppress the warning
 						List<FileStorageVM> listFile = (List<FileStorageVM>)request.getSession().getAttribute("listFile");
+						SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 						if(listFile != null) {
 							for(FileStorageVM File : listFile) {
 					%>
@@ -155,7 +158,7 @@
 						<th><input name="select" type="checkbox" class="select"
 							onclick="showAction()" value="<%= File.getId() %>" /></th>
 						<td><%= File.getFileName() %></td>
-						<td><%= File.getCreationDate() %></td>
+						<td><%= dateFormat.format(File.getCreationDate()) %></td>
 						<td class="table-td-action">
 							<button class="delete-btn table-btn"
 								onclick="showConfirmDelete('<%= File.getId() %>')">
