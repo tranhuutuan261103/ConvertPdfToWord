@@ -2,6 +2,10 @@ package controller.home;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -40,32 +44,54 @@ public class PdfToWord extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Part filePart = request.getPart("myfile");
+		Collection<Part> fileParts = request.getParts();
 		System.out.println("Called PdfToWord controller");
 		
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 		
-		if (filePart != null) {
-			// Extract file name and extension from Content-Disposition header
-		    String contentDispositionHeader = filePart.getHeader("Content-Disposition");
-		    String fileName = extractFileName(contentDispositionHeader);
-			
-		    // Get data of file
-		    InputStream fileContent = filePart.getInputStream();
-			
-		    // Create thread to convert file
-			ConvertRequest convertRequest = new ConvertRequest(username, fileName, fileContent);
-			Thread conversionThread = new Thread(new ConversionRunnable(convertRequest));
-	        conversionThread.start();
-		}
-		
-		if (username == null || username.isEmpty()) {
-			response.sendRedirect("../home/index.jsp");
-		}
-		else {
-			response.sendRedirect("../home/index-login.jsp");
-		}
+		if (fileParts != null && !fileParts.isEmpty()) {
+	        List<ConvertRequest> convertRequests = new ArrayList<>();
+
+	        // Loop through each file part and create ConvertRequest
+	        for (Part filePart : fileParts) {
+	            // Extract file name and extension from Content-Disposition header
+	            String contentDispositionHeader = filePart.getHeader("Content-Disposition");
+	            String fileName = extractFileName(contentDispositionHeader);
+	            
+	            String uniqueId = generateUniqueId();
+	            String generatedFileName = extractFileNameWithoutExtension(fileName) + "-" + uniqueId;
+
+	            // Get data of file
+	            InputStream fileContent = filePart.getInputStream();
+
+	            // Create ConvertRequest and add to the list
+	            ConvertRequest convertRequest = new ConvertRequest(username, generatedFileName, fileContent);
+	            convertRequests.add(convertRequest);
+	        }
+
+	        // Create threads to convert files
+	        List<Thread> conversionThreads = new ArrayList<>();
+
+	        for (ConvertRequest convertRequest : convertRequests) {
+	            Thread conversionThread = new Thread(new ConversionRunnable(convertRequest));
+	            conversionThreads.add(conversionThread);
+	            conversionThread.start();
+	        }
+
+	        for (Thread conversionThread : conversionThreads) {
+	            try {
+	                conversionThread.join();
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        
+	        response.sendRedirect("../home/index-login.jsp");
+
+	    } else {
+	        response.sendRedirect("../home/index.jsp");
+	    }
 	}
 
 	/**
@@ -86,6 +112,22 @@ public class PdfToWord extends HttpServlet {
 	    }
 	    // If no filename information found in the header, generate a default name or handle accordingly
 	    return "defaultFileName"; 
+	}
+	
+	private String generateUniqueId() {
+		UUID id = UUID.randomUUID();
+		return id.toString();
+	}
+	
+	private String extractFileNameWithoutExtension(String filePath) {
+	    // Remove the file extension
+	    int dotIndex = filePath.lastIndexOf('.');
+	    String fileName = "default";
+	    if (dotIndex > 0) {
+	    	fileName = filePath.substring(0, dotIndex);
+	    }
+
+	    return fileName;
 	}
 }
 
