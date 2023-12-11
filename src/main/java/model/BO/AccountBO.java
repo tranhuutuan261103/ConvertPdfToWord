@@ -17,4 +17,9 @@ public class AccountBO {
 		AccountDAO dao = new AccountDAO();
 		return dao.Register(request);
 	}
+	
+	public boolean changePassword(Account request) {
+		AccountDAO dao = new AccountDAO();
+		return dao.changePassword(request);
+	}
 }
