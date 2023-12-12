@@ -104,7 +104,7 @@ session.getAttribute("showPopupOTP"); %>
       <div class="popup-sign-up">
         <div class="close-btn" onclick="unshowSignUp()">&times;</div>
         <form class="form" action="../account/CheckRegister">
-          <h2>Log in</h2>
+          <h2>Sign up</h2>
           <div class="form-element">
             <label class="view-label" for="email">Email</label>
             <input
